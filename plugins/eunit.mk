@@ -42,8 +42,7 @@ EUNIT_RUN = erl \
 	-noshell \
 	-pa $(realpath $(EUNIT_DIR)) $(DEPS_DIR)/*/ebin \
 	-pz $(realpath ebin) \
-	-eval 'eunit:test([$(call str-join,$(TAGGED_EUNIT_TESTS))], [$(EUNIT_OPTS)]).' \
-	-s erlang halt
+	-eval 'case eunit:test([$(call str-join,$(TAGGED_EUNIT_TESTS))], [$(EUNIT_OPTS)]) of ok -> erlang:halt(0); error -> erlang:halt(1) end.'
 
 help-eunit:
 	@printf "%s\n" "" \
