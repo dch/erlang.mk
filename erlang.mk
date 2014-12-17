@@ -1022,10 +1022,6 @@ eunit: ERLC_OPTS = $(EUNIT_ERLC_OPTS)
 eunit: clean deps app build-eunit
 	@echo '$(EUNIT_OPTS)' | perl -ne \
 		'mkdir $$1 if /{\s*report\s*,\s*{\s*eunit_surefire\s*,\s*\[.*{\s*dir\s*,\s*"(.*)"\s*}.*\]\s*}\s*}/'
-	@echo "EUNIT_DIR = " $(EUNIT_DIR)
-	@echo "EUNIT_DIR_MODS = " $(EUNIT_DIR_MODS)
-	@echo "EUNIT_MODS = " $(EUNIT_MODS)
-	@echo "TAGGED_EUNIT_TESTS = " '$(TAGGED_EUNIT_TESTS)'
 	$(gen_verbose) $(EUNIT_RUN)
 
 clean-eunit:
