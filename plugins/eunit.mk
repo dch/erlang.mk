@@ -19,7 +19,7 @@ EUNIT_EBIN_MODS = $(notdir $(basename $(shell find ebin -name *.beam)))
 EUNIT_MODS = $(filter-out $(patsubst %,%_tests,$(EUNIT_EBIN_MODS)),$(EUNIT_DIR_MODS))
 TAGGED_EUNIT_TESTS = {dir,"ebin"} $(foreach mod,$(EUNIT_MODS),$(shell echo $(mod) | sed -e 's/\(.*\)/{module,\1}/g'))
 
-EUNIT_OPTS ?= verbose, {report,{eunit_surefire,[{dir,"logs"}]}}
+EUNIT_OPTS ?= verbose
 
 # Utility functions
 
@@ -34,8 +34,6 @@ help:: help-eunit
 tests:: eunit
 
 clean:: clean-eunit
-
-distclean:: distclean-eunit
 
 # Plugin-specific targets.
 
@@ -64,13 +62,7 @@ endif
 
 eunit: ERLC_OPTS = $(EUNIT_ERLC_OPTS)
 eunit: clean deps app build-eunit
-	@echo '$(EUNIT_OPTS)' | perl -ne \
-		'mkdir $$1 if /{\s*report\s*,\s*{\s*eunit_surefire\s*,\s*\[.*{\s*dir\s*,\s*"(.*)"\s*}.*\]\s*}\s*}/'
 	$(gen_verbose) $(EUNIT_RUN)
 
 clean-eunit:
 	$(gen_verbose) $(foreach dir,$(EUNIT_DIRS),rm -rf $(dir)/*.beam)
-
-distclean-eunit:
-	@echo '$(EUNIT_OPTS)' | perl -ne \
-		'use File::Path rmtree; rmtree $$1 if /{\s*report\s*,\s*{\s*eunit_surefire\s*,\s*\[.*{\s*dir\s*,\s*"(.*)"\s*}.*\]\s*}\s*}/'
