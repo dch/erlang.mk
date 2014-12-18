@@ -967,9 +967,9 @@ EUNIT_DIR ?=
 EUNIT_DIRS = $(sort $(EUNIT_DIR) ebin)
 
 # All modules in EUNIT_DIR
-EUNIT_DIR_MODS = $(notdir $(basename $(shell find $(EUNIT_DIR) -name *.beam)))
+EUNIT_DIR_MODS = $(notdir $(basename $(shell find $(EUNIT_DIR) -type f -name *.beam)))
 # All modules in 'ebin'
-EUNIT_EBIN_MODS = $(notdir $(basename $(shell find ebin -name *.beam)))
+EUNIT_EBIN_MODS = $(notdir $(basename $(shell find ebin -type f -name *.beam)))
 # Only those modules in EUNIT_DIR with no matching module in 'ebin'.
 # This is done to avoid some tests being executed twice.
 EUNIT_MODS = $(filter-out $(patsubst %,%_tests,$(EUNIT_EBIN_MODS)),$(EUNIT_DIR_MODS))
