@@ -10,6 +10,9 @@ EUNIT_ERLC_OPTS ?= +debug_info +warn_export_vars +warn_shadow_vars +warn_obsolet
 EUNIT_DIR ?=
 EUNIT_DIRS = $(sort $(EUNIT_DIR) ebin)
 
+ifeq ($(strip $(EUNIT_DIR)),)
+TAGGED_EUNIT_TESTS = {dir,"ebin"}
+else
 # All modules in EUNIT_DIR
 EUNIT_DIR_MODS = $(notdir $(basename $(shell find $(EUNIT_DIR) -type f -name *.beam)))
 # All modules in 'ebin'
@@ -18,6 +21,7 @@ EUNIT_EBIN_MODS = $(notdir $(basename $(shell find ebin -type f -name *.beam)))
 # This is done to avoid some tests being executed twice.
 EUNIT_MODS = $(filter-out $(patsubst %,%_tests,$(EUNIT_EBIN_MODS)),$(EUNIT_DIR_MODS))
 TAGGED_EUNIT_TESTS = {dir,"ebin"} $(foreach mod,$(EUNIT_MODS),$(shell echo $(mod) | sed -e 's/\(.*\)/{module,\1}/g'))
+endif
 
 EUNIT_OPTS ?= verbose
 
